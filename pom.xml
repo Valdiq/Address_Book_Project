@@ -31,11 +31,18 @@
         <h2-database.version>2.2.224</h2-database.version>
         <junit.version>3.8.1</junit.version>
         <mysql-connector.version>8.2.0</mysql-connector.version>
+        <hibernate-core.version>6.1.2.Final</hibernate-core.version>
         <lombok.version>1.18.30</lombok.version>
+        <springdoc-openapi.version>2.0.4</springdoc-openapi.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-batch</artifactId>
@@ -96,6 +103,11 @@
                 <artifactId>spring-batch-test</artifactId>
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate-core.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
