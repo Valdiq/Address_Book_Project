@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysql-container
+    env_file:
+      - docker-compose_local_only.env
+    ports:
+      - "3307:3306"
