@@ -1,4 +1,4 @@
-package org.vlad_stasyshyn.dao;
+package org.vlad_stasyshyn.model.dao;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Data
 @Accessors(chain = true)
-@JsonTypeName(Company.COMPANY_JSON_TYPE_NAME)
-public class Company extends Contact {
+@JsonTypeName(CompanyDAO.COMPANY_JSON_TYPE_NAME)
+public class CompanyDAO extends ContactDAO {
     public static final String COMPANY_JSON_TYPE_NAME = "COMPANY";
 
 

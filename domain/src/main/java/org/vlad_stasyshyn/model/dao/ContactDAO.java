@@ -1,4 +1,4 @@
-package org.vlad_stasyshyn.dao;
+package org.vlad_stasyshyn.model.dao;
 
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.vlad_stasyshyn.model.enums.ContactType;
 
 @Data
 @AllArgsConstructor
@@ -19,17 +20,13 @@ import lombok.experimental.Accessors;
         visible = true
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Company.class, name = "COMPANY"),
-        @JsonSubTypes.Type(value = Person.class, name = "PERSON")
+        @JsonSubTypes.Type(value = CompanyDAO.class, name = "COMPANY"),
+        @JsonSubTypes.Type(value = PersonDAO.class, name = "PERSON")
 })
-public abstract class Contact {
+public abstract class ContactDAO {
 
     private ContactType contactType;
 
     private Long id;
-
-    private String phoneNumber;
-
-    private String email;
 
 }

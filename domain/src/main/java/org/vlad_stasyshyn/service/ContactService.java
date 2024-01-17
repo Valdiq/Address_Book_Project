@@ -2,7 +2,9 @@ package org.vlad_stasyshyn.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vlad_stasyshyn.entity.ContactEntity;
+import org.vlad_stasyshyn.mapper.ContactEntityMapper;
+import org.vlad_stasyshyn.model.dao.ContactDAO;
+import org.vlad_stasyshyn.model.entity.ContactEntity;
 import org.vlad_stasyshyn.repository.ContactRepository;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.Optional;
 public class ContactService {
 
     private final ContactRepository repository;
+
+    private final ContactEntityMapper contactEntityMapper;
 
 
     public ContactEntity getContact(Long id) {
@@ -26,13 +30,12 @@ public class ContactService {
     }
 
 
-    public ContactEntity createContact(ContactEntity contact) {
-        return repository.save(contact);
+    public ContactEntity createContact(ContactDAO contactDAO) {
+        return repository.save(contactEntityMapper.mapContactDAOToContactEntity(contactDAO));
     }
 
-
-    public ContactEntity updateContact(ContactEntity contact) {
-        return repository.save(contact);
+    public ContactEntity updateContact(ContactDAO contactDAO) {
+        return repository.save(contactEntityMapper.mapContactDAOToContactEntity(contactDAO));
     }
 
     public void deleteContact(Long id) {

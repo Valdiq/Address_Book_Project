@@ -1,4 +1,4 @@
-package org.vlad_stasyshyn.entity;
+package org.vlad_stasyshyn.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
