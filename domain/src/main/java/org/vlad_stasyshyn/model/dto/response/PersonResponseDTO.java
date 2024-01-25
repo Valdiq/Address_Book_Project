@@ -1,17 +1,14 @@
-package org.vlad_stasyshyn.model.dao;
+package org.vlad_stasyshyn.model.dto.response;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-@Accessors(chain = true)
-public class PersonDAO extends ContactDAO {
+public class PersonResponseDTO extends ContactResponseDTO {
 
     private String firstName;
 
@@ -19,4 +16,8 @@ public class PersonDAO extends ContactDAO {
 
     private String PESEL;
 
+    @Override
+    public String displayName() {
+        return firstName + " " + lastName;
+    }
 }

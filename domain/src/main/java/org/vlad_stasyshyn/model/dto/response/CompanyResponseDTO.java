@@ -1,20 +1,20 @@
-package org.vlad_stasyshyn.model.dao;
+package org.vlad_stasyshyn.model.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-@Accessors(chain = true)
-public class CompanyDAO extends ContactDAO {
+public class CompanyResponseDTO extends ContactResponseDTO {
 
     private String name;
 
     private String NIP;
 
+    @Override
+    public String displayName() {
+        return name;
+    }
 }
