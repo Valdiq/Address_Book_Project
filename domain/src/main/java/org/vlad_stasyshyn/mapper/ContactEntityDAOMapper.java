@@ -13,7 +13,7 @@ import org.vlad_stasyshyn.model.entity.PersonEntity;
         subclassExhaustiveStrategy = SubclassExhaustiveStrategy.RUNTIME_EXCEPTION,
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
-public interface ContactEntityMapper {
+public interface ContactEntityDAOMapper {
 
     @SubclassMappings({
             @SubclassMapping(source = PersonDAO.class, target = PersonEntity.class),
@@ -21,5 +21,10 @@ public interface ContactEntityMapper {
     })
     ContactEntity mapContactDAOToContactEntity(ContactDAO contactDAO);
 
+    @SubclassMappings({
+            @SubclassMapping(source = PersonEntity.class, target = PersonDAO.class),
+            @SubclassMapping(source = CompanyEntity.class, target = CompanyDAO.class)
+    })
+    ContactDAO mapContactEntityToContactDAO(ContactEntity contactEntity);
 
 }
