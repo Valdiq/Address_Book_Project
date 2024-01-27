@@ -53,7 +53,7 @@ public class ContactService {
         }
 
         if (newContact instanceof PersonEntity newPersonEntity
-        && contactToUpdate instanceof PersonEntity personEntityToUpdate) {
+                && contactToUpdate instanceof PersonEntity personEntityToUpdate) {
             if (newPersonEntity.getPESEL() == null) {
                 newPersonEntity.setPESEL(personEntityToUpdate.getPESEL());
             }
