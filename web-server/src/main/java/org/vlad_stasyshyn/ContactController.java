@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.vlad_stasyshyn.mapper.ContactModelMapper;
@@ -57,7 +58,7 @@ public class ContactController {
             })
     })
     @PostMapping("/contacts")
-    public ContactResponseDTO createContact(@RequestBody ContactRequestDTO contactRequestDTO) {
+    public ContactResponseDTO createContact(@RequestBody @Valid ContactRequestDTO contactRequestDTO) {
         return modelMapper.mapContactEntityToContactResponseDTO(
                 service.createContact(
                         modelMapper.mapContactRequestDTOToContactDAO(contactRequestDTO)
@@ -72,7 +73,7 @@ public class ContactController {
             })
     })
     @PutMapping("/contacts/{id}")
-    public ContactResponseDTO updateContact(@PathVariable Long id, @RequestBody ContactRequestDTO contactRequestDTO) {
+    public ContactResponseDTO updateContact(@PathVariable Long id, @RequestBody @Valid ContactRequestDTO contactRequestDTO) {
         return modelMapper.mapContactEntityToContactResponseDTO(
                 service.updateContact(
                         id, modelMapper.mapContactRequestDTOToContactDAO(contactRequestDTO)
