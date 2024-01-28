@@ -1,11 +1,8 @@
-package org.vlad_stasyshyn;
+package org.vlad_stasyshyn.controller;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.vlad_stasyshyn.mapper.ContactModelMapper;
 import org.vlad_stasyshyn.model.dto.request.ContactRequestDTO;
@@ -16,6 +13,7 @@ import org.vlad_stasyshyn.service.ContactService;
 import java.util.List;
 
 @RestController
+@Validated
 @RequiredArgsConstructor
 @RequestMapping("/api")
 
@@ -25,24 +23,11 @@ public class ContactController {
 
     private final ContactModelMapper modelMapper;
 
-
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContactResponseDTO.class))
-            })
-    })
     @GetMapping("/contacts/{id}")
     public ContactResponseDTO getContact(@PathVariable Long id) {
         return modelMapper.mapContactEntityToContactResponseDTO(service.getContact(id));
     }
 
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContactResponseDTO.class))
-            })
-    })
     @GetMapping("/contacts")
     public List<ContactResponseDTO> getAllContacts() {
         List<ContactEntity> contactResponseDTOList = service.getAllContacts().get();
@@ -51,12 +36,6 @@ public class ContactController {
                 .toList();
     }
 
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContactResponseDTO.class))
-            })
-    })
     @PostMapping("/contacts")
     public ContactResponseDTO createContact(@RequestBody @Valid ContactRequestDTO contactRequestDTO) {
         return modelMapper.mapContactEntityToContactResponseDTO(
@@ -66,12 +45,6 @@ public class ContactController {
         );
     }
 
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContactResponseDTO.class))
-            })
-    })
     @PutMapping("/contacts/{id}")
     public ContactResponseDTO updateContact(@PathVariable Long id, @RequestBody @Valid ContactRequestDTO contactRequestDTO) {
         return modelMapper.mapContactEntityToContactResponseDTO(
