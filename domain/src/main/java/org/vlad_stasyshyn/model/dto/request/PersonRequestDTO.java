@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
-import org.vlad_stasyshyn.ValidPersonFullName;
+import org.vlad_stasyshyn.validation.ValidPersonFullName;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -25,7 +25,7 @@ public class PersonRequestDTO extends ContactRequestDTO {
     private String lastName;
 
     @JsonProperty(value = "PESEL")
-    @org.vlad_stasyshyn.PESEL
+    @org.vlad_stasyshyn.validation.PESEL
     private String PESEL;
 
 }

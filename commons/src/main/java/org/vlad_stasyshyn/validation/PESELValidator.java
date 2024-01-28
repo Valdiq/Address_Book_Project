@@ -1,4 +1,4 @@
-package org.vlad_stasyshyn;
+package org.vlad_stasyshyn.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

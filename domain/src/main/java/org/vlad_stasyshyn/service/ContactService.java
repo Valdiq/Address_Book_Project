@@ -2,6 +2,7 @@ package org.vlad_stasyshyn.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.vlad_stasyshyn.exceptionHandling.ContactNotFoundException;
 import org.vlad_stasyshyn.mapper.ContactEntityDAOMapper;
 import org.vlad_stasyshyn.model.dao.ContactDAO;
 import org.vlad_stasyshyn.model.entity.CompanyEntity;
@@ -23,12 +24,12 @@ public class ContactService {
 
     public ContactEntity getContact(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Contact Not Found"));
+                .orElseThrow(() -> new ContactNotFoundException(id));
     }
 
     public Optional<List<ContactEntity>> getAllContacts() {
         return Optional.ofNullable(Optional.of(repository.findAll())
-                .orElseThrow(() -> new RuntimeException("No Contacts Found")));
+                .orElseThrow(ContactNotFoundException::new));
     }
 
 
@@ -39,7 +40,7 @@ public class ContactService {
     public ContactEntity updateContact(Long id, ContactDAO contactDAO) {
 
         var contactToUpdate = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No Contact Found"));
+                .orElseThrow(() -> new ContactNotFoundException(id));
 
         var newContact = contactEntityDAOMapper.mapContactDAOToContactEntity(contactDAO)
                 .setId(contactToUpdate.getId()); // <-- setting ID from ContactDAO to ContactEntity automatically by mapper(mapstruct) doesn't work for some reason.

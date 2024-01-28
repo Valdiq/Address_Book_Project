@@ -17,7 +17,7 @@ public class CompanyRequestDTO extends ContactRequestDTO {
     private String name;
 
     @JsonProperty(value = "NIP")
-    @org.vlad_stasyshyn.NIP
+    @org.vlad_stasyshyn.validation.NIP
     private String NIP;
 
 }
