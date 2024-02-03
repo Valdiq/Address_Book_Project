@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user_role")
+@Table(name = "user")
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor

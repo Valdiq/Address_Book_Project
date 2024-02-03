@@ -24,6 +24,7 @@ public class RegisterRequestDTO {
     @NotBlank
     private String password;
 
+    @NotBlank
     @UserRole
     private Set<UserRoles> roles;
 

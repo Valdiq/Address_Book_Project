@@ -1,5 +1,6 @@
 package org.vladstasyshyn.security.config;
 
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +23,13 @@ import org.vladstasyshyn.security.user.UserService;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
+    @Resource(name = "userService")
     private final UserService userService;
 
     @Bean
