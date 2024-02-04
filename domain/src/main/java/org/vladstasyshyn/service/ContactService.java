@@ -9,6 +9,7 @@ import org.vladstasyshyn.exceptionhandling.ContactNotFoundException;
 import org.vladstasyshyn.mapper.ContactEntityDAOMapper;
 import org.vladstasyshyn.model.dao.ContactDAO;
 import org.vladstasyshyn.model.entity.CompanyEntity;
+import org.vladstasyshyn.model.entity.ContactDetailsEntity;
 import org.vladstasyshyn.model.entity.ContactEntity;
 import org.vladstasyshyn.model.entity.PersonEntity;
 import org.vladstasyshyn.repository.ContactRepository;
@@ -23,6 +24,8 @@ import java.util.Optional;
 public class ContactService {
 
     private final ContactRepository repository;
+
+    private final ContactDetailsService detailsService;
 
     private final ContactEntityDAOMapper contactEntityDAOMapper;
 
@@ -41,7 +44,12 @@ public class ContactService {
 
 
     public ContactEntity createContact(@Valid ContactDAO contactDAO) {
-        return repository.save(contactEntityDAOMapper.mapContactDAOToContactEntity(contactDAO));
+        var newContact = contactEntityDAOMapper.mapContactDAOToContactEntity(contactDAO);
+        newContact.setContactDetails(new ContactDetailsEntity()
+                .setPhone(contactDAO.getPhone())
+                .setEmail(contactDAO.getEmail())
+                .setContactEntity(newContact));
+        return repository.save(newContact);
     }
 
     public ContactEntity updateContact(Long id, @Valid ContactDAO contactDAO) {
@@ -49,28 +57,49 @@ public class ContactService {
         var contactToUpdate = repository.findById(id)
                 .orElseThrow(() -> new ContactNotFoundException(id));
 
+        var contactDetails = detailsService.findByContactEntityId(id)
+                .orElseThrow(() -> new RuntimeException("Contact Details Not Found"));
+
         var newContact = contactEntityDAOMapper.mapContactDAOToContactEntity(contactDAO)
                 .setId(contactToUpdate.getId()); // <-- setting ID from ContactDAO to ContactEntity automatically by mapper(mapstruct) doesn't work for some reason.
         // Will be fixed in final debug branch in future (when I'll figure it out wtf it's going wrong with it lol) :)
 
-        if (newContact instanceof CompanyEntity newCompanyEntity
-                && contactToUpdate instanceof CompanyEntity companyEntityToUpdate) {
-            if (newCompanyEntity.getNIP() == null) {
-                newCompanyEntity.setNIP(companyEntityToUpdate.getNIP());
-            }
-        }
 
-        if (newContact instanceof PersonEntity newPersonEntity
-                && contactToUpdate instanceof PersonEntity personEntityToUpdate) {
-            if (newPersonEntity.getPESEL() == null) {
-                newPersonEntity.setPESEL(personEntityToUpdate.getPESEL());
-            }
-        }
+        var newContactDetails = new ContactDetailsEntity()
+                .setId(contactDetails.getId())
+                .setPhone(contactDAO.getPhone())
+                .setEmail(contactDAO.getEmail())
+                .setContactEntity(newContact);
+
+        newContact.setContactDetails(newContactDetails);
+
+        setDefaultValuesForNullFields(newContact, contactToUpdate);
 
         return repository.save(newContact);
     }
 
     public void deleteContact(Long id) {
         repository.deleteById(id);
+    }
+
+    private void setDefaultValuesForNullFields(ContactEntity newContact, ContactEntity oldContact) {
+        if (newContact instanceof CompanyEntity newCompanyEntity
+                && oldContact instanceof CompanyEntity oldCompany) {
+            if (newCompanyEntity.getNIP() == null) {
+                newCompanyEntity.setNIP(oldCompany.getNIP());
+            }
+        }
+
+        if (newContact instanceof PersonEntity newPersonEntity
+                && oldContact instanceof PersonEntity oldPerson) {
+            if (newPersonEntity.getPESEL() == null) {
+                newPersonEntity.setPESEL(oldPerson.getPESEL());
+            }
+        }
+
+        if (newContact.getContactDetails().getPhone() == null) {
+            var oldContactDetails = oldContact.getContactDetails();
+            newContact.getContactDetails().setPhone(oldContactDetails.getPhone());
+        }
     }
 }

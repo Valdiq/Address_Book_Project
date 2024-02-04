@@ -14,5 +14,9 @@ public abstract class ContactResponseDTO {
 
     private ContactType contactType;
 
+    private String email;
+
+    private String phone;
+
     public abstract String displayName();
 }
