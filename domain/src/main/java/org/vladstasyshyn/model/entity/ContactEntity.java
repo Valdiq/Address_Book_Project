@@ -17,4 +17,7 @@ public abstract class ContactEntity {
     @SequenceGenerator(name = "contact_id_seq", sequenceName = "contact_id_seq", allocationSize = 10)
     private Long id;
 
+    @OneToOne(mappedBy = "contactEntity", cascade = CascadeType.ALL)
+    private ContactDetailsEntity contactDetails;
+
 }

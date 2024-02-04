@@ -26,4 +26,9 @@ public abstract class ContactRequestDTO {
     @JsonProperty(required = true)
     private ContactType contactType;
 
+    @JsonProperty(required = true)
+    private String email;
+
+    private String phone;
+
 }
