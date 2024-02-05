@@ -1,6 +1,7 @@
 package org.vladstasyshyn.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.vladstasyshyn.mapper.ContactModelMapper;
@@ -36,6 +37,15 @@ public class ContactController {
     public List<ContactResponseDTO> getAllContacts() {
         List<ContactEntity> contactResponseDTOList = service.getAllContacts().get();
         return contactResponseDTOList.stream()
+                .map(modelMapper::mapContactEntityToContactResponseDTO)
+                .toList();
+    }
+
+    @AnyRoleAccess
+    @GetMapping("/contacts/page")
+    public List<ContactResponseDTO> getContactPage(@RequestParam(name = "nr") int pageNumber, @RequestParam(name = "size") int pageSize) {
+        Page<ContactEntity> entityPage = service.getContactPage(pageNumber, pageSize);
+        return entityPage.stream()
                 .map(modelMapper::mapContactEntityToContactResponseDTO)
                 .toList();
     }

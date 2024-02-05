@@ -2,6 +2,9 @@ package org.vladstasyshyn.service;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -42,6 +45,11 @@ public class ContactService {
                 .orElseThrow(ContactNotFoundException::new));
     }
 
+    @Transactional(readOnly = true)
+    public Page<ContactEntity> getContactPage(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return repository.findAll(pageable);
+    }
 
     public ContactEntity createContact(@Valid ContactDAO contactDAO) {
         var newContact = contactEntityDAOMapper.mapContactDAOToContactEntity(contactDAO);
