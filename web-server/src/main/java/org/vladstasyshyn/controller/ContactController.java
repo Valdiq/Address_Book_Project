@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.vladstasyshyn.logging.implementation.LogApiCall;
 import org.vladstasyshyn.mapper.ContactModelMapper;
 import org.vladstasyshyn.model.dto.request.ContactRequestDTO;
 import org.vladstasyshyn.model.dto.response.ContactResponseDTO;
@@ -25,6 +26,7 @@ public class ContactController {
 
     private final ContactModelMapper modelMapper;
 
+    @LogApiCall
     @AnyRoleAccess
     @GetMapping("/contacts/{id}")
     public ContactResponseDTO getContact(@PathVariable Long id) {
@@ -32,6 +34,7 @@ public class ContactController {
         return modelMapper.mapContactEntityToContactResponseDTO(service.getContact(id));
     }
 
+    @LogApiCall
     @AnyRoleAccess
     @GetMapping("/contacts")
     public List<ContactResponseDTO> getAllContacts() {
@@ -41,6 +44,7 @@ public class ContactController {
                 .toList();
     }
 
+    @LogApiCall
     @AnyRoleAccess
     @GetMapping("/contacts/page")
     public List<ContactResponseDTO> getContactPage(@RequestParam(name = "nr") int pageNumber, @RequestParam(name = "size") int pageSize) {
@@ -50,6 +54,7 @@ public class ContactController {
                 .toList();
     }
 
+    @LogApiCall
     @AnyRoleAccess
     @PostMapping("/contacts")
     public ContactResponseDTO createContact(@RequestBody ContactRequestDTO contactRequestDTO) {
@@ -60,6 +65,7 @@ public class ContactController {
         );
     }
 
+    @LogApiCall
     @AnyRoleAccess
     @PutMapping("/contacts/{id}")
     public ContactResponseDTO updateContact(@PathVariable Long id, @RequestBody ContactRequestDTO contactRequestDTO) {
@@ -70,6 +76,7 @@ public class ContactController {
         );
     }
 
+    @LogApiCall
     @AdminRoleAccess
     @DeleteMapping("/contacts/{id}")
     public void deleteContact(@PathVariable Long id) {
