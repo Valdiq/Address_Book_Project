@@ -8,3 +8,9 @@ services:
       - docker-compose_local_only.env
     ports:
       - "3307:3306"
+
+  mongodb:
+    image: mongo
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
