@@ -16,8 +16,4 @@ public class PersonResponseDTO extends ContactResponseDTO {
 
     private String PESEL;
 
-    @Override
-    public String displayName() {
-        return firstName + " " + lastName;
-    }
 }

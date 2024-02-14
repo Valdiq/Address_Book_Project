@@ -18,5 +18,4 @@ public abstract class ContactResponseDTO {
 
     private String phone;
 
-    public abstract String displayName();
 }

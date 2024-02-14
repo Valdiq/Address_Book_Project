@@ -13,8 +13,4 @@ public class CompanyResponseDTO extends ContactResponseDTO {
 
     private String NIP;
 
-    @Override
-    public String displayName() {
-        return name;
-    }
 }

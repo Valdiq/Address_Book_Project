@@ -22,4 +22,8 @@ public class CompanyDAO extends ContactDAO {
     @org.vladstasyshyn.validation.contact.NIP
     private String NIP;
 
+    @Override
+    public String getFullName() {
+        return name;
+    }
 }

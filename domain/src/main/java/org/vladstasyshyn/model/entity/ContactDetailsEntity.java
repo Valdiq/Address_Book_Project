@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Entity
 @Table(name = "contact_details")
 @Data
