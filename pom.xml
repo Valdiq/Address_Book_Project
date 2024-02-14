@@ -38,6 +38,7 @@
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <jjwt.version>0.12.4</jjwt.version>
         <springfox.version>3.0.0</springfox.version>
+        <spring-context-support.version>6.1.2</spring-context-support.version>
     </properties>
 
     <dependencyManagement>
@@ -126,6 +127,16 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-mongodb</artifactId>
                 <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-mail</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring-context-support.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.batch</groupId>

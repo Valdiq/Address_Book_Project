@@ -32,6 +32,7 @@ public class ContactService {
 
     private final ContactEntityDAOMapper contactEntityDAOMapper;
 
+    private final EmailService emailService;
 
     @Transactional(readOnly = true)
     public ContactEntity getContact(Long id) {
@@ -51,37 +52,45 @@ public class ContactService {
         return repository.findAll(pageable);
     }
 
+    @Transactional
     public ContactEntity createContact(@Valid ContactDAO contactDAO) {
         var newContact = contactEntityDAOMapper.mapContactDAOToContactEntity(contactDAO);
-        newContact.setContactDetails(new ContactDetailsEntity()
+        var newContactDetails = new ContactDetailsEntity()
                 .setPhone(contactDAO.getPhone())
                 .setEmail(contactDAO.getEmail())
-                .setContactEntity(newContact));
-        return repository.save(newContact);
+                .setContactEntity(newContact);
+        newContact.setContactDetails(newContactDetails);
+        var savedEntity = repository.save(newContact);
+        emailService.sendGreetingEmail(newContact.getContactDetails().getEmail(), contactDAO.getFullName());
+        emailService.createConfirmationEntity(newContactDetails);
+        return savedEntity;
     }
 
     public ContactEntity updateContact(Long id, @Valid ContactDAO contactDAO) {
 
-        var contactToUpdate = repository.findById(id)
+        var oldContact = repository.findById(id)
                 .orElseThrow(() -> new ContactNotFoundException(id));
 
-        var contactDetails = detailsService.findByContactEntityId(id)
+        var oldContactDetails = detailsService.findByContactEntityId(id)
                 .orElseThrow(() -> new RuntimeException("Contact Details Not Found"));
 
         var newContact = contactEntityDAOMapper.mapContactDAOToContactEntity(contactDAO)
-                .setId(contactToUpdate.getId()); // <-- setting ID from ContactDAO to ContactEntity automatically by mapper(mapstruct) doesn't work for some reason.
+                .setId(oldContact.getId()); // <-- setting ID from ContactDAO to ContactEntity automatically by mapper(mapstruct) doesn't work for some reason.
         // Will be fixed in final debug branch in future (when I'll figure it out wtf it's going wrong with it lol) :)
 
-
         var newContactDetails = new ContactDetailsEntity()
-                .setId(contactDetails.getId())
+                .setId(oldContactDetails.getId())
                 .setPhone(contactDAO.getPhone())
                 .setEmail(contactDAO.getEmail())
                 .setContactEntity(newContact);
 
         newContact.setContactDetails(newContactDetails);
 
-        setDefaultValuesForNullFields(newContact, contactToUpdate);
+        setDefaultValuesForNullFields(newContact, oldContact);
+
+        if (!oldContactDetails.getEmail().equals(newContactDetails.getEmail())) {
+            emailService.createConfirmationEntity(newContactDetails);
+        }
 
         return repository.save(newContact);
     }

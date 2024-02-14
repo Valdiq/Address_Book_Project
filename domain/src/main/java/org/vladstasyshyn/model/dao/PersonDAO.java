@@ -29,4 +29,8 @@ public class PersonDAO extends ContactDAO {
     @org.vladstasyshyn.validation.contact.PESEL
     private String PESEL;
 
+    @Override
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

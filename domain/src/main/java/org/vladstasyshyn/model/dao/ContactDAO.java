@@ -27,4 +27,5 @@ public abstract class ContactDAO {
     @Phone
     private String phone;
 
+    public abstract String getFullName();
 }
